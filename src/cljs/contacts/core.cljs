@@ -14,6 +14,9 @@
                                      {:id 3
                                       :name "Kip"
                                       :email "kip@live.com"}]}))
+(defn contacts []
+  (om/ref-cursor (:contacts (om/root-cursor app-state))))
+
 (defn contact-view [contact owner]
   (reify
     om/IRender
@@ -21,7 +24,13 @@
         (dom/div nil 
                     (dom/div nil (:name contact))
                     (dom/div nil (:email contact))
-                    (dom/button nil "Delete")))))
+                    (dom/button #js {:onClick (fn [e]
+                                                (let [cs (contacts)]
+                                                (om/update! cs
+                                                (vec (remove #(=
+                                                (:id contact) (:id %))
+                                                cs)))))} 
+                    "Delete")))))
 
 (defn contacts-list-view [contacts owner]
   (reify
