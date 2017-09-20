@@ -14,15 +14,31 @@
                                      {:id 3
                                       :name "Kip"
                                       :email "kip@live.com"}]}))
+(defn contact-view [contact owner]
+  (reify
+    om/IRender
+      (render [_]
+        (dom/div nil 
+                    (dom/div nil (:name contact))
+                    (dom/div nil (:email contact))
+                    (dom/button nil "Delete")))))
 
-(defn root-component [app owner]
+(defn contacts-list-view [contacts owner]
   (reify
     om/IRender
     (render [_]
-      (dom/div nil (dom/h1 nil (:text app))))))
+      (dom/div nil 
+                  (to-array (om/build-all contact-view contacts))))))
+
+(defn app-view [state owner]
+  (reify
+    om/IRender
+    (render [_]
+      (dom/div nil 
+                  (om/build contacts-list-view (:contacts state))))))
 
 (defn render []
-  (om/root
-   root-component
-   app-state
-   {:target (js/document.getElementById "app")}))
+(om/root
+ app-view
+ app-state
+ {:target (.getElementById js/document "app")}))
