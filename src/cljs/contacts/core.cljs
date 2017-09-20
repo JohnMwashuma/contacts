@@ -4,7 +4,16 @@
 
 (enable-console-print!)
 
-(defonce app-state (atom {:text "Hello Chestnut!"}))
+(defonce app-state (atom {:text "Hello Chestnut!"
+                          :contacts [{:id 1
+                                      :name "John"
+                                      :email "jmwashuma@live.com"}
+                                     {:id 2
+                                      :name "Roy"
+                                      :email "roy@live.com"}
+                                     {:id 3
+                                      :name "Kip"
+                                      :email "kip@live.com"}]}))
 
 (defn root-component [app owner]
   (reify
